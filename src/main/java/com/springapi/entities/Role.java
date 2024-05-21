@@ -2,6 +2,8 @@ package com.springapi.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -11,6 +13,9 @@ public class Role {
 
     @Column(name = "role")
     private String role;
+
+    @ManyToMany(mappedBy = "role")
+    private List<Permission> permissions;
 
     public Role(String role) {
         this.role = role;
@@ -34,5 +39,13 @@ public class Role {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 }

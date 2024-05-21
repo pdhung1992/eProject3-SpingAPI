@@ -2,12 +2,14 @@ package com.springapi.config;
 
 import com.springapi.security.jwt.AuthEntryPointJwt;
 import com.springapi.security.jwt.AuthTokenFilter;
+import com.springapi.security.services.AdminDetailsServiceImplement;
 import com.springapi.security.services.UserDetailsServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,17 +19,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     @Autowired
     UserDetailsServiceImplement userDetailsService;
+
+    @Autowired
+    AdminDetailsServiceImplement adminDetailsService;
+
 
     @Autowired
     AuthEntryPointJwt unauthorizedHandler;
@@ -38,10 +46,20 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider userAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    @Bean
+    public DaoAuthenticationProvider adminAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(adminDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -53,23 +71,52 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig, HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .authenticationProvider(userAuthenticationProvider())
+                .authenticationProvider(adminAuthenticationProvider())
+                .build();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and()
+                .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/user/register").permitAll()
+                        .requestMatchers("api/auth/user/login").permitAll()
+                        .requestMatchers("/api/auth/user/change-password").authenticated()
+                        .requestMatchers("/api/auth/admin/create-account").permitAll()
+                        .requestMatchers("/api/auth/admin/login").permitAll()
+
+                        .requestMatchers("/api/roles").hasAuthority("Root Admin")
+
+                        .requestMatchers("/api/permissions").hasAuthority("Root Admin")
+
+                        .requestMatchers("/api/accounts").hasAuthority("Root Admin")
+
+                        .requestMatchers("/api/cities").permitAll()
+                        .requestMatchers("/api/cities/**").permitAll()
+                        .requestMatchers("/api/cities/create").hasAuthority("Root Admin")
+                        .requestMatchers("/api/cities/update/**").hasAuthority("Root Admin")
+                        .requestMatchers("/api/cities/delete/**").hasAuthority("Root Admin")
+
+                        .requestMatchers("/api/districts").permitAll()
+                        .requestMatchers("/api/districts/**").permitAll()
+                        .requestMatchers("/api/districts/create").hasAuthority("Root Admin")
+                        .requestMatchers("/api/districts/update/**").hasAuthority("Root Admin")
+                        .requestMatchers("/api/districts/delete/**").hasAuthority("Root Admin")
+
+                        .requestMatchers("/api/images/**").permitAll()
+
                         .anyRequest().authenticated()
                 );
 
-        http.authenticationProvider(authenticationProvider());
+        http.authenticationProvider(userAuthenticationProvider());
+        http.authenticationProvider(adminAuthenticationProvider());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -73,6 +73,10 @@ public class UserDetailsImplement implements UserDetails {
         return user_id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getPhone() {
         return phone;
     }

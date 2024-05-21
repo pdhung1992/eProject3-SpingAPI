@@ -1,6 +1,10 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "admin")
@@ -95,5 +99,9 @@ public class Admin {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Collection<? extends GrantedAuthority> getPermissions() {
+        return List.of();
     }
 }

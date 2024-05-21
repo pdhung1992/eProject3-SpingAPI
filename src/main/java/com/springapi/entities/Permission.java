@@ -1,6 +1,7 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "permissions")
@@ -24,6 +25,7 @@ public class Permission {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
+
 
     public Permission(String permission_name, int sort_order, String prefix, String fa_icon, Role role) {
         this.permission_name = permission_name;
@@ -84,4 +86,5 @@ public class Permission {
     public void setRole(Role role) {
         this.role = role;
     }
+
 }
