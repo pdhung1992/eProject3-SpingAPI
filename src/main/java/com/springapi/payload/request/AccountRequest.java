@@ -1,45 +1,53 @@
 package com.springapi.payload.request;
 
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
-public class CreateAccountRequest {
+public class AccountRequest {
     private String username;
     private String fullname;
     private String email;
-    private String phone;
+    private String telephone;
     private String password;
     private int roleId;
 
     private String resName;
     private String resAddress;
+    private String resDescription;
     private String resDeliveryHours;
-    private double resPrepaidRate;
+    private double prepaidRate;
     private int resMinimumDelivery;
-    private File resThumbnail;
-    private File resBanner;
+    private MultipartFile resThumbnail;
+    private MultipartFile resBanner;
     private int resDistrictId;
-    private int restCatId;
+    private int resCatId;
 
-    public CreateAccountRequest() {
+    public AccountRequest() {
     }
 
-    public CreateAccountRequest(String username, String fullname, String email, String phone, String password, int roleId, String resName, String resAddress, String resDeliveryHours, double resPrepaidRate, int resMinimumDelivery, File resThumbnail, File resBanner, int resDistrictId, int restCatId) {
+    public AccountRequest(String fullname, String email, String telephone) {
+        this.fullname = fullname;
+        this.email = email;
+        this.telephone = telephone;
+    }
+
+    public AccountRequest(String username, String fullname, String email, String telephone, String password, int roleId, String resName, String resAddress, String resDescription, String resDeliveryHours, double prepaidRate, int resMinimumDelivery, MultipartFile resThumbnail, MultipartFile resBanner, int resDistrictId, int resCatId) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
-        this.phone = phone;
+        this.telephone = telephone;
         this.password = password;
         this.roleId = roleId;
         this.resName = resName;
         this.resAddress = resAddress;
+        this.resDescription = resDescription;
         this.resDeliveryHours = resDeliveryHours;
-        this.resPrepaidRate = resPrepaidRate;
+        this.prepaidRate = prepaidRate;
         this.resMinimumDelivery = resMinimumDelivery;
         this.resThumbnail = resThumbnail;
         this.resBanner = resBanner;
         this.resDistrictId = resDistrictId;
-        this.restCatId = restCatId;
+        this.resCatId = resCatId;
     }
 
     public String getUsername() {
@@ -66,12 +74,12 @@ public class CreateAccountRequest {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getPassword() {
@@ -106,6 +114,14 @@ public class CreateAccountRequest {
         this.resAddress = resAddress;
     }
 
+    public String getResDescription() {
+        return resDescription;
+    }
+
+    public void setResDescription(String resDescription) {
+        this.resDescription = resDescription;
+    }
+
     public String getResDeliveryHours() {
         return resDeliveryHours;
     }
@@ -114,12 +130,12 @@ public class CreateAccountRequest {
         this.resDeliveryHours = resDeliveryHours;
     }
 
-    public double getResPrepaidRate() {
-        return resPrepaidRate;
+    public double getPrepaidRate() {
+        return prepaidRate;
     }
 
-    public void setResPrepaidRate(double resPrepaidRate) {
-        this.resPrepaidRate = resPrepaidRate;
+    public void setPrepaidRate(double prepaidRate) {
+        this.prepaidRate = prepaidRate;
     }
 
     public int getResMinimumDelivery() {
@@ -130,19 +146,19 @@ public class CreateAccountRequest {
         this.resMinimumDelivery = resMinimumDelivery;
     }
 
-    public File getResThumbnail() {
+    public MultipartFile getResThumbnail() {
         return resThumbnail;
     }
 
-    public void setResThumbnail(File resThumbnail) {
+    public void setResThumbnail(MultipartFile resThumbnail) {
         this.resThumbnail = resThumbnail;
     }
 
-    public File getResBanner() {
+    public MultipartFile getResBanner() {
         return resBanner;
     }
 
-    public void setResBanner(File resBanner) {
+    public void setResBanner(MultipartFile resBanner) {
         this.resBanner = resBanner;
     }
 
@@ -154,11 +170,11 @@ public class CreateAccountRequest {
         this.resDistrictId = resDistrictId;
     }
 
-    public int getRestCatId() {
-        return restCatId;
+    public int getResCatId() {
+        return resCatId;
     }
 
-    public void setRestCatId(int restCatId) {
-        this.restCatId = restCatId;
+    public void setResCatId(int resCatId) {
+        this.resCatId = resCatId;
     }
 }

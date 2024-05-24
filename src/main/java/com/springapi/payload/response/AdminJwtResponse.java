@@ -26,6 +26,10 @@ public class AdminJwtResponse {
         this.permissions = permissions;
     }
 
+    public AdminJwtResponse(String username) {
+        this.username = username;
+    }
+
     public String getToken() {
         return token;
     }

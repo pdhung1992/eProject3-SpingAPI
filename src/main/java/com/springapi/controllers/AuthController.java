@@ -1,7 +1,6 @@
 package com.springapi.controllers;
 
 import com.springapi.entities.Admin;
-import com.springapi.entities.Permission;
 import com.springapi.entities.Role;
 import com.springapi.entities.User;
 import com.springapi.payload.request.*;
@@ -10,7 +9,6 @@ import com.springapi.payload.response.PermissionResponse;
 import com.springapi.payload.response.UserJwtResponse;
 import com.springapi.payload.response.MessageResponse;
 import com.springapi.repositories.AdminRepository;
-import com.springapi.repositories.PermissionRepository;
 import com.springapi.repositories.RoleRepository;
 import com.springapi.repositories.UserRepository;
 import com.springapi.security.jwt.JwtUtils;
@@ -53,9 +51,9 @@ public class AuthController {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
     private AdminService adminService;
+    @Autowired
+    RoleRepository roleRepository;
 
     //User
 
@@ -140,8 +138,8 @@ public class AuthController {
 
     //Create Account
     @PostMapping("/admin/create-account")
-    @PreAuthorize("hasRole('Root Admin')")
-    public ResponseEntity<?> createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest){
+    @PreAuthorize("hasAuthority('Root Admin')")
+    public ResponseEntity<?> createAccount(@Valid @RequestBody AccountRequest createAccountRequest){
         try {
             //Check if username is already in use
             if(adminRepository.existsByUsername(createAccountRequest.getUsername())){
@@ -160,7 +158,7 @@ public class AuthController {
                     createAccountRequest.getUsername(),
                     encodedPassword,
                     createAccountRequest.getEmail(),
-                    createAccountRequest.getPhone(),
+                    createAccountRequest.getTelephone(),
                     createAccountRequest.getFullname(),
                     role
             );
@@ -189,6 +187,7 @@ public class AuthController {
             AdminDetailsImplement adminDetails = (AdminDetailsImplement) authentication.getPrincipal();
 
             String role = adminDetails.getRole().getRole();
+
             List<PermissionResponse> permissions = adminService.getPermissionsByRoleId(adminDetails.getRole().getRole_id());
 
             return ResponseEntity.ok(new AdminJwtResponse(
@@ -206,4 +205,32 @@ public class AuthController {
     }
 
     //Change password
+    @PostMapping("/admin/change-password")
+    public ResponseEntity<?> changeAdminPassword(@RequestBody ChangePasswordRequest changePasswordRequest, @RequestHeader("Authorization") String tokenHeader){
+        try {
+            String token = tokenHeader.substring(7);
+
+            String username = jwtUtils.getUserNameFromJwtToken(token);
+
+            if (!adminRepository.existsByUsername(username)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Change password failed.");
+            }
+
+            Admin admin = (Admin) adminService.getAdminByUsername(username).get();
+
+            if (!encoder.matches(changePasswordRequest.getCurrentPassword(), admin.getPassword())){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Old password incorrect.");
+            }
+
+            admin.setPassword(encoder.encode(changePasswordRequest.getNewPassword()));
+            adminRepository.save(admin);
+
+            return ResponseEntity.status(HttpStatus.OK).body(new AdminJwtResponse(
+                    admin.getUsername()
+            )) ;
+
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Change password failed." + tokenHeader);
+        }
+    }
 }

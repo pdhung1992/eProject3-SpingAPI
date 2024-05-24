@@ -1,6 +1,7 @@
 package com.springapi.repositories;
 
 import com.springapi.entities.Admin;
+import com.springapi.entities.Restaurant;
 import com.springapi.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,10 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     @Query("SELECT a.role FROM Admin a WHERE a.admin_id = :adminId")
     Role findRoleByAdminId(@Param("adminId") int adminId);
+
+    @Query("SELECT r FROM Restaurant r WHERE r.admin.admin_id = :adminId")
+    Restaurant findRestaurantByAdminId(@Param("adminId") int adminId);
+
+    Optional<Object> findAdminByUsername(String username);
 
 }

@@ -19,6 +19,10 @@ public class AdminResponse {
         this.role = role;
     }
 
+    public AdminResponse(String username) {
+        this.username = username;
+    }
+
     public int getId() {
         return id;
     }

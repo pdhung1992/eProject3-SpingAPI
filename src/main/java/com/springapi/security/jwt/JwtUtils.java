@@ -43,10 +43,12 @@ public class JwtUtils {
 
         AdminDetailsImplement adminPrincipal = (AdminDetailsImplement) authentication.getPrincipal();
 
+
         Claims claims = Jwts.claims().setSubject(adminPrincipal.getUsername());
         claims.put("authorities", adminPrincipal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         claims.put("role", adminPrincipal.getRole().getRole());
+
 
         return Jwts.builder()
                 .setClaims(claims)

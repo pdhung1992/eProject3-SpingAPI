@@ -1,5 +1,6 @@
 package com.springapi.services;
 
+import com.springapi.entities.Role;
 import com.springapi.payload.response.RoleResponse;
 import com.springapi.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,4 +20,7 @@ public class RoleService  {
                 .collect(Collectors.toList());
     }
 
+    public Role getRoleById(int roleId){
+        return roleRepository.findById(roleId).orElse(null);
+    }
 }

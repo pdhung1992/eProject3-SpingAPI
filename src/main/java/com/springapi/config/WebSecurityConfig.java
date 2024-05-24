@@ -91,12 +91,15 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/user/change-password").authenticated()
                         .requestMatchers("/api/auth/admin/create-account").permitAll()
                         .requestMatchers("/api/auth/admin/login").permitAll()
+                        .requestMatchers("/api/auth/admin/change-password").authenticated()
+                        .requestMatchers("/api/auth/admin/create-account").hasAuthority("Root Admin")
 
                         .requestMatchers("/api/roles").hasAuthority("Root Admin")
 
                         .requestMatchers("/api/permissions").hasAuthority("Root Admin")
 
                         .requestMatchers("/api/accounts").hasAuthority("Root Admin")
+                        .requestMatchers("/api/accounts/**").hasAuthority("Root Admin")
 
                         .requestMatchers("/api/cities").permitAll()
                         .requestMatchers("/api/cities/**").permitAll()
@@ -110,7 +113,24 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/districts/update/**").hasAuthority("Root Admin")
                         .requestMatchers("/api/districts/delete/**").hasAuthority("Root Admin")
 
+                        .requestMatchers("/api/types").permitAll()
+
+                        .requestMatchers("/api/ftags").permitAll()
+
+                        .requestMatchers("/api/servetypes").permitAll()
+
+                        .requestMatchers("/api/status").permitAll()
+
+                        .requestMatchers("/api/categories").permitAll()
+                        .requestMatchers("/api/categories/**").permitAll()
+                        .requestMatchers("/api/categories/create").hasAuthority("Root Admin")
+                        .requestMatchers("/api/categories/update/**").hasAuthority("Root Admin")
+                        .requestMatchers("/api/categories/delete/**").hasAuthority("Root Admin")
+
                         .requestMatchers("/api/images/**").permitAll()
+
+                        .requestMatchers("/api/restaurant/admin").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/restaurant/**").permitAll()
 
                         .anyRequest().authenticated()
                 );

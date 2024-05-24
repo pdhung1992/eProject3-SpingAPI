@@ -33,7 +33,7 @@ public class Restaurant {
     private int minimum_order;
 
     @Column(name = "prepaid_rate")
-    private int prepaid_rate;
+    private double prepaid_rate;
 
     @Column(name = "banner")
     private String banner;
@@ -50,7 +50,7 @@ public class Restaurant {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    public Restaurant(String restaurant_name, String restaurant_address, Date join_date, String thumbnail, String description, String delivery_hours, int minimum_order, int prepaid_rate, String banner, Category category, District district, Admin admin) {
+    public Restaurant(String restaurant_name, String restaurant_address, Date join_date, String thumbnail, String description, String delivery_hours, int minimum_order, double prepaid_rate, String banner, Category category, District district, Admin admin) {
         this.restaurant_name = restaurant_name;
         this.restaurant_address = restaurant_address;
         this.join_date = join_date;
@@ -133,11 +133,11 @@ public class Restaurant {
         this.minimum_order = minimum_order;
     }
 
-    public int getPrepaid_rate() {
+    public double getPrepaid_rate() {
         return prepaid_rate;
     }
 
-    public void setPrepaid_rate(int prepaid_rate) {
+    public void setPrepaid_rate(double prepaid_rate) {
         this.prepaid_rate = prepaid_rate;
     }
 
