@@ -1,5 +1,6 @@
 package com.springapi.services;
 
+import com.springapi.entities.Tag;
 import com.springapi.payload.response.FoodTagResponse;
 import com.springapi.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,9 @@ public class TagService {
         return tagRepository.findAll().stream()
                 .map(tag -> new FoodTagResponse(tag.getTag_id(), tag.getTag_name()))
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    public Tag getTagById(int tagId) {
+        return tagRepository.findById(tagId).orElse(null);
     }
 }

@@ -118,6 +118,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/ftags").permitAll()
 
                         .requestMatchers("/api/servetypes").permitAll()
+                        .requestMatchers("/api/servetypes/**").permitAll()
 
                         .requestMatchers("/api/status").permitAll()
 
@@ -130,7 +131,20 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/images/**").permitAll()
 
                         .requestMatchers("/api/restaurant/admin").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/restaurant/update").hasAuthority("Restaurant Admin")
                         .requestMatchers("/api/restaurant/**").permitAll()
+
+                        .requestMatchers("/api/foods/create").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/foods/update/**").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/foods/delete/**").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/foods/**").permitAll()
+
+                        .requestMatchers("/api/combos/**").permitAll()
+                        .requestMatchers("/api/combos/create").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/combos/delete/**").hasAuthority("Restaurant Admin")
+
+                        .requestMatchers("/api/orders/restaurant").hasAuthority("Restaurant Admin")
+                        .requestMatchers("/api/orders/user").hasAuthority("User")
 
                         .anyRequest().authenticated()
                 );

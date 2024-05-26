@@ -1,6 +1,7 @@
 package com.springapi.repositories;
 
 import com.springapi.entities.Restaurant;
+import com.springapi.entities.ServeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT r FROM Restaurant r WHERE r.category.category_id = :categoryId")
     List<Restaurant> findByCategoryId(@Param("categoryId") int categoryId);
+
 }

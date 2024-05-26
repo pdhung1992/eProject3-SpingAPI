@@ -44,17 +44,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 Claims claims = jwtUtils.getClaimsFromJwtToken(jwt);
 
-//                String role = claims.get("authorities", String.class);
-//                System.out.println(role );
                 List<String> roles = claims.get("authorities", List.class);
 
-                UserDetails userDetails;
 
-                if (roles.contains("Root Admin") || roles.contains("Restaurant Admin")){
-                    userDetails = adminDetailsService.loadUserByUsername(username);
-                } else {
-                    userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = null;
+
+                if (roles != null) {
+                    if (roles.contains("Root Admin") || roles.contains("Restaurant Admin")) {
+                        userDetails = adminDetailsService.loadUserByUsername(username);
+                    } else if (roles.contains("User")) {
+                        userDetails = userDetailsService.loadUserByUsername(username);
+                    }
                 }
+
 
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)

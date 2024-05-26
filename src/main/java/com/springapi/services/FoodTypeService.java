@@ -1,5 +1,6 @@
 package com.springapi.services;
 
+import com.springapi.entities.FoodType;
 import com.springapi.payload.response.FoodTypeResponse;
 import com.springapi.repositories.FoodTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,9 @@ public class FoodTypeService {
         return foodTypeRepository.findAll().stream()
                 .map(foodType -> new FoodTypeResponse(foodType.getFood_type_id(), foodType.getFood_type_name(), foodType.getDescription(), foodType.getSort_order()))
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    public FoodType getFoodTypeById(int id) {
+        return foodTypeRepository.findById(id).orElse(null);
     }
 }

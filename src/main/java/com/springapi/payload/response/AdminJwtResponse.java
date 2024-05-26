@@ -15,8 +15,9 @@ public class AdminJwtResponse {
     private String fullName;
     private String role;
     private List<PermissionResponse> permissions;
+    private int resId;
 
-    public AdminJwtResponse(String token, int id, String username, String email, String fullName, String role, List<PermissionResponse> permissions) {
+    public AdminJwtResponse(String token, int id, String username, String email, String fullName, String role, List<PermissionResponse> permissions, int resId) {
         this.token = token;
         this.id = id;
         this.username = username;
@@ -24,6 +25,7 @@ public class AdminJwtResponse {
         this.fullName = fullName;
         this.role = role;
         this.permissions = permissions;
+        this.resId = resId;
     }
 
     public AdminJwtResponse(String username) {
@@ -92,5 +94,12 @@ public class AdminJwtResponse {
 
     public void setPermissions(List<PermissionResponse> permissions) {
         this.permissions = permissions;
+    }
+
+    public int getResId() {
+        return resId;
+    }
+    public void setResId(int resId) {
+        this.resId = resId;
     }
 }

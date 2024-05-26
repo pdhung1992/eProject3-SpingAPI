@@ -1,6 +1,7 @@
 package com.springapi.controllers;
 
 import com.springapi.entities.Admin;
+import com.springapi.entities.Restaurant;
 import com.springapi.entities.Role;
 import com.springapi.entities.User;
 import com.springapi.payload.request.*;
@@ -15,6 +16,7 @@ import com.springapi.security.jwt.JwtUtils;
 import com.springapi.security.services.AdminDetailsImplement;
 import com.springapi.security.services.UserDetailsImplement;
 import com.springapi.services.AdminService;
+import com.springapi.services.RestaurantService;
 import com.springapi.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,8 @@ public class AuthController {
     private AdminService adminService;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private RestaurantService restaurantService;
 
     //User
 
@@ -190,6 +194,13 @@ public class AuthController {
 
             List<PermissionResponse> permissions = adminService.getPermissionsByRoleId(adminDetails.getRole().getRole_id());
 
+            int resId = 0;
+
+            Restaurant restaurant = restaurantService.getRestaurantByAdmin(adminDetails.getAdmin_id());
+            if (restaurant != null){
+                resId = restaurant.getRestaurant_id();
+            }
+
             return ResponseEntity.ok(new AdminJwtResponse(
                     jwt,
                     adminDetails.getAdmin_id(),
@@ -197,7 +208,8 @@ public class AuthController {
                     adminDetails.getEmail(),
                     adminDetails.getFullname(),
                     role,
-                    permissions
+                    permissions,
+                    resId
             ));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password.");
