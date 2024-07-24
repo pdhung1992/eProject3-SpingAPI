@@ -1,10 +1,14 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "permissions")
+@Getter
+@Setter
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,54 +41,6 @@ public class Permission {
 
     public Permission() {
         super();
-    }
-
-    public int getPermission_id() {
-        return permission_id;
-    }
-
-    public void setPermission_id(int permission_id) {
-        this.permission_id = permission_id;
-    }
-
-    public String getPermission_name() {
-        return permission_name;
-    }
-
-    public void setPermission_name(String permission_name) {
-        this.permission_name = permission_name;
-    }
-
-    public int getSort_order() {
-        return sort_order;
-    }
-
-    public void setSort_order(int sort_order) {
-        this.sort_order = sort_order;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public String getFa_icon() {
-        return fa_icon;
-    }
-
-    public void setFa_icon(String fa_icon) {
-        this.fa_icon = fa_icon;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
 }

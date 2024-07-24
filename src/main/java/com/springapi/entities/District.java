@@ -1,9 +1,13 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "districts")
+@Getter
+@Setter
 public class District {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,28 +29,5 @@ public class District {
         super();
     }
 
-    public int getDistrict_id() {
-        return district_id;
-    }
-
-    public void setDistrict_id(int district_id) {
-        this.district_id = district_id;
-    }
-
-    public String getDistrict_name() {
-        return district_name;
-    }
-
-    public void setDistrict_name(String district_name) {
-        this.district_name = district_name;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
 
 }

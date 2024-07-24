@@ -1,9 +1,13 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "foodtypes")
+@Getter
+@Setter
 public class FoodType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,35 +32,4 @@ public class FoodType {
         super();
     }
 
-    public int getFood_type_id() {
-        return food_type_id;
-    }
-
-    public void setFood_type_id(int food_type_id) {
-        this.food_type_id = food_type_id;
-    }
-
-    public String getFood_type_name() {
-        return food_type_name;
-    }
-
-    public void setFood_type_name(String food_type_name) {
-        this.food_type_name = food_type_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getSort_order() {
-        return sort_order;
-    }
-
-    public void setSort_order(int sort_order) {
-        this.sort_order = sort_order;
-    }
 }

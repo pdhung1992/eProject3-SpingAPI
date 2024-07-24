@@ -1,9 +1,13 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "cities")
+@Getter
+@Setter
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,27 +28,4 @@ public class City {
         super();
     }
 
-    public int getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
-    }
-
-    public String getCity_name() {
-        return city_name;
-    }
-
-    public void setCity_name(String city_name) {
-        this.city_name = city_name;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
 }

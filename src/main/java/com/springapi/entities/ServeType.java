@@ -1,9 +1,13 @@
 package com.springapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "servetypes")
+@Getter
+@Setter
 public class ServeType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,29 +26,5 @@ public class ServeType {
 
     public ServeType() {
         super();
-    }
-
-    public int getServe_type_id() {
-        return serve_type_id;
-    }
-
-    public void setServe_type_id(int serve_type_id) {
-        this.serve_type_id = serve_type_id;
-    }
-
-    public String getServe_type_name() {
-        return serve_type_name;
-    }
-
-    public void setServe_type_name(String serve_type_name) {
-        this.serve_type_name = serve_type_name;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }
